@@ -1,13 +1,13 @@
-// src/components/ui/Input.tsx
+// src/components/ui/DateInput.tsx
 import React, { InputHTMLAttributes } from 'react';
 import { cn } from '../../utils/cn';
 
-interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
+interface DateInputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'type'> {
   label?: string;
   error?: string;
 }
 
-const Input: React.FC<InputProps> = ({ label, error, className, ...props }) => {
+const DateInput: React.FC<DateInputProps> = ({ label, error, className, ...props }) => {
   // Base styles - layout, sizing, colors
   const baseClasses = cn(
     'w-full p-4',
@@ -43,6 +43,7 @@ const Input: React.FC<InputProps> = ({ label, error, className, ...props }) => {
         </label>
       )}
       <input
+        type="date"
         className={cn(baseClasses, stateClasses, className)}
         {...props}
       />
@@ -53,4 +54,5 @@ const Input: React.FC<InputProps> = ({ label, error, className, ...props }) => {
   );
 };
 
-export default Input;
+export default DateInput;
+

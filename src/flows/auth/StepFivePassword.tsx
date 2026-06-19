@@ -1,15 +1,17 @@
-// src/flows/auth/StepThreePassword.tsx
+// src/flows/auth/StepFivePassword.tsx
 import React, { useState } from 'react';
 import Button from '../../components/ui/Button';
 import Input from '../../components/ui/Input';
 import MotionContainer from '../../components/ui/MotionContainer';
+import FormCard from '../../components/ui/FormCard';
+import ScribbledTitle from '../../components/ui/ScribbledTitle';
 
 interface StepProps {
   onNext: (data: { password: string, password2: string }) => void;
   prevData: { username?: string };
 }
 
-const StepThreePassword: React.FC<StepProps> = ({ onNext, prevData }) => {
+const StepFivePassword: React.FC<StepProps> = ({ onNext, prevData }) => {
   const [password, setPassword] = useState('');
   const [password2, setPassword2] = useState('');
   const [error, setError] = useState('');
@@ -31,15 +33,18 @@ const StepThreePassword: React.FC<StepProps> = ({ onNext, prevData }) => {
     onNext({ password, password2 });
   };
 
-return (
-    <MotionContainer>
-      <form onSubmit={handleSubmit} className="w-full space-y-6">
-        <h3 className="text-3xl font-bold text-emerald-400">
-          The Final Challenge, {username}.
-        </h3>
-        <p className="text-sm text-gray-400">
-          Your digital vault key. Make it complex, make it memorable, make it *at least 8 characters*.
-        </p>
+  return (
+      <MotionContainer>
+        <FormCard maxWidth="max-w-xl">
+          <form onSubmit={handleSubmit} className="w-full space-y-6">
+
+            <ScribbledTitle> {/* Defaults to medium size */}
+              The Final Challenge, {username}.
+            </ScribbledTitle>
+
+            <p className="text-sm text-gray-500">
+              Your digital vault key. Make it complex, make it memorable, make it *at least 8 characters*.
+            </p>
 
         <Input
           type="password"
@@ -56,12 +61,13 @@ return (
           error={error}
         />
 
-        <Button type="submit" className="w-full" variant="primary">
-          Create My Flux Account!
-        </Button>
-      </form>
-    </MotionContainer>
-  );
+  <Button type="submit" className="w-full" variant="primary">
+              Create My Flux Account!
+            </Button>
+          </form>
+        </FormCard>
+      </MotionContainer>
+    );
 };
 
-export default StepThreePassword;
+export default StepFivePassword;

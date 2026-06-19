@@ -1,4 +1,70 @@
-/* src/index.css */
+/* src/index.css (CORRECTED ORDER) */
+
+/* 1. --- GOOGLE FONT IMPORTS MUST BE FIRST --- */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Permanent+Marker&display=swap');
+
+/* 2. --- THEN THE TAILWIND DIRECTIVES --- */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+/* 3. --- THEN ANY OTHER CUSTOM CSS (Like the scribble effect) --- */
+
+.bg-light-bg {
+  /* This creates a very subtle, faint dotted/noise pattern using CSS gradients */
+  background-image: radial-gradient(#333333 0.5px, transparent 0.5px);
+  background-size: 50px 50px;
+  background-color: #fcfcfc; /* Ensure this matches your light-bg color */
+  opacity: 1; /* Ensure full opacity */
+}
+
+.scribble-underline {
+  text-decoration: none;
+  position: relative;
+  display: inline-block;
+  padding-bottom: 8px;
+}
+
+.scribble-underline::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 10px;
+  /* Reference the SVG file path */
+  background: url('/src/assets/scribble-underline.svg') repeat-x;
+
+  background-size: 100px 10px;
+  opacity: 0.9;
+}
+
+
+/* --- Custom Component Classes using @apply --- */
+
+/* 1. Auth/App Header Link Style (used in MultiStepAuthFlow and AppHeader) */
+.logo-link-style {
+  @apply inline-block cursor-pointer transition-opacity hover:opacity-80;
+}
+
+/* 2. Form Card Wrapper Style (used in FormCard.tsx) */
+/* Note: The FormCard component will still apply the dynamic maxWidth prop */
+.form-card-base-style {
+  @apply bg-white p-8 rounded-xl shadow-2xl border border-gray-100 text-dark-text font-sans;
+}
+
+/* 3. Dashboard Header Navigation Link Style */
+.nav-link-style {
+  @apply text-dark-text hover:text-brand-primary transition-colors text-sm font-medium;
+}
+
+/* 4. Transaction Row Hover/Active Style (used in future lists) */
+.data-row-hover {
+  @apply bg-neutral-light/50 transition-colors duration-150 cursor-pointer;
+}
+
+/* 5. Primary Button Style (If not already componentized in Button.tsx) */
+.btn-primary {
+  @apply bg-brand-primary text-white hover:bg-brand-accent transition-colors shadow-md py-2 px-4 rounded-lg font-semibold;
+}

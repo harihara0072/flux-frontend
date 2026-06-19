@@ -1,13 +1,14 @@
 // src/flows/auth/MultiStepAuthFlow.tsx
 import React, {useMemo, useState} from 'react';
 import { useNavigate } from 'react-router-dom';
+import Logo from '../../components/ui/Logo'; // NEW IMPORT
 
 // We will create the next steps later
-// import StepTwoEmail from './StepTwoEmail';
-// import StepThreePassword from './StepThreePassword';
-import StepOneName from './StepOneName';
-import StepTwoEmail from './StepTwoEmail'; // New Import
-import StepThreePassword from './StepThreePassword'; // New Import
+import StepOneIdentity from './StepOneIdentity'; // New Name
+import StepTwoPersonal from './StepTwoPersonal'; // NEW
+import StepThreeAvatar from './StepThreeAvatar'; // NEW
+import StepFourEmail from './StepFourEmail';   // Renamed
+import StepFivePassword from './StepFivePassword'; // Renamed
 import { BASE_URL } from '../../api/config'; // New Import for API URL
 import axios from 'axios'; // New Import for API calls
 
@@ -22,11 +23,12 @@ interface RegistrationData {
 // Map the steps to components
 // Map the steps to components (Now includes all three steps)
 const steps = [
-  StepOneName,
-  StepTwoEmail,
-  StepThreePassword,
+  StepOneIdentity,
+  StepTwoPersonal, // New Step 2
+  StepThreeAvatar, // New Step 3
+  StepFourEmail,   // New Step 4
+  StepFivePassword, // New Step 5
 ];
-
 const MultiStepAuthFlow: React.FC = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const navigate = useNavigate();
@@ -85,9 +87,22 @@ const MultiStepAuthFlow: React.FC = () => {
   }, [currentStep]);
 
   return (
-    // Centering wrapper
+      <div className="min-h-screen">
+
+      {/* 💥 NEW AUTH HEADER 💥 */}
+      <header className="py-4 px-8 border-b border-gray-100 bg-white shadow-sm sticky top-0 z-20">
+        <a
+          href="/"
+          onClick={(e) => { e.preventDefault(); navigate('/login'); }}
+          className="logo-link-style"
+          title="Back to Sign In"
+        >
+          {/* Use the Logo component here, sized appropriately */}
+          <Logo width="150" height="56" />
+        </a>
+      </header>
     <div className="flex justify-center items-center min-h-screen p-4">
-      <div className="w-full max-w-md">
+      <div className="w-full">
         {/* Render the current step component, passing down the logic */}
         <CurrentStepComponent onNext={handleNext} prevData={formData} />
 
@@ -104,6 +119,7 @@ const MultiStepAuthFlow: React.FC = () => {
         )}
       </div>
     </div>
+      </div>
   );
 };
 
