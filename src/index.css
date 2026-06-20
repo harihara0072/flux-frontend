@@ -1,70 +1,64 @@
-/* src/index.css (CORRECTED ORDER) */
+/* src/index.css */
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap');
 
-/* 1. --- GOOGLE FONT IMPORTS MUST BE FIRST --- */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Permanent+Marker&display=swap');
+@import './styles/tokens.css';
 
-/* 2. --- THEN THE TAILWIND DIRECTIVES --- */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  body {
+    @apply bg-bg text-text-primary font-body antialiased;
+    font-feature-settings: 'ss01' 1, 'cv01' 1;
+    transition: background-color 200ms ease, color 200ms ease;
+  }
 
-/* 3. --- THEN ANY OTHER CUSTOM CSS (Like the scribble effect) --- */
+  ::selection {
+    background: var(--color-violet-dim);
+    color: var(--color-text-primary);
+  }
 
-.bg-light-bg {
-  /* This creates a very subtle, faint dotted/noise pattern using CSS gradients */
-  background-image: radial-gradient(#333333 0.5px, transparent 0.5px);
-  background-size: 50px 50px;
-  background-color: #fcfcfc; /* Ensure this matches your light-bg color */
-  opacity: 1; /* Ensure full opacity */
+  /* Visible keyboard focus everywhere, no exceptions */
+  :focus-visible {
+    outline: 2px solid var(--color-violet-soft);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  /* Tabular numerals for all amounts by default */
+  .tabular-amount {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.01em;
+  }
+
+  /* Thin, quiet scrollbars that match the current theme's surface */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--scrollbar-thumb);
+    border-radius: 999px;
+    border: 2px solid var(--color-bg);
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--scrollbar-thumb-hover);
+  }
 }
 
-.scribble-underline {
-  text-decoration: none;
-  position: relative;
-  display: inline-block;
-  padding-bottom: 8px;
-}
-
-.scribble-underline::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 10px;
-  /* Reference the SVG file path */
-  background: url('/src/assets/scribble-underline.svg') repeat-x;
-
-  background-size: 100px 10px;
-  opacity: 0.9;
-}
-
-
-/* --- Custom Component Classes using @apply --- */
-
-/* 1. Auth/App Header Link Style (used in MultiStepAuthFlow and AppHeader) */
-.logo-link-style {
-  @apply inline-block cursor-pointer transition-opacity hover:opacity-80;
-}
-
-/* 2. Form Card Wrapper Style (used in FormCard.tsx) */
-/* Note: The FormCard component will still apply the dynamic maxWidth prop */
-.form-card-base-style {
-  @apply bg-white p-8 rounded-xl shadow-2xl border border-gray-100 text-dark-text font-sans;
-}
-
-/* 3. Dashboard Header Navigation Link Style */
-.nav-link-style {
-  @apply text-dark-text hover:text-brand-primary transition-colors text-sm font-medium;
-}
-
-/* 4. Transaction Row Hover/Active Style (used in future lists) */
-.data-row-hover {
-  @apply bg-neutral-light/50 transition-colors duration-150 cursor-pointer;
-}
-
-/* 5. Primary Button Style (If not already componentized in Button.tsx) */
-.btn-primary {
-  @apply bg-brand-primary text-white hover:bg-brand-accent transition-colors shadow-md py-2 px-4 rounded-lg font-semibold;
+@layer utilities {
+  .skeleton-shimmer {
+    background: linear-gradient(
+      90deg,
+      var(--color-surface-sunken) 0%,
+      var(--color-border-strong) 50%,
+      var(--color-surface-sunken) 100%
+    );
+    background-size: 800px 100%;
+  }
 }

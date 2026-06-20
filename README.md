@@ -1,73 +1,74 @@
-# React + TypeScript + Vite
+# flux-frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Flux is a personal finance app: connect bank accounts or upload statements,
+auto-categorize transactions, set budget limits, split bills with friends,
+and see it all in a fast, modern dashboard.
 
-Currently, two official plugins are available:
+## Stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- React 18 + TypeScript
+- Vite
+- Tailwind CSS (design tokens in `src/styles/tokens.css`)
+- Framer Motion for animation
+- Recharts for data visualization
+- React Router
 
-## React Compiler
+## Project structure
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```
+src/
+  components/
+    common/      # Reusable, domain-agnostic UI primitives (Button, Card, Tabs,
+                  Autocomplete, Modal, etc). Import via `components/common`.
+    charts/      # Data-viz building blocks (FlowBar, TrendChart, StatCard)
+    layout/      # App shell / navigation chrome
+    ui/          # Legacy auth-flow-specific components (pre-dates the
+                  common library; slated for consolidation)
+  features/      # Page-level feature modules (dashboard, transactions, bills, budgets)
+  flows/auth/    # Multi-step registration flow
+  hooks/         # Shared React hooks (useAuth, etc.)
+  lib/           # Utilities + mock data (mock data is temporary, see below)
+  pages/         # Route-level page components
+  styles/        # Design tokens
+  types/         # Shared TypeScript types
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Current milestone: UI shell
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+This pass rebuilds the homepage as a tabbed dashboard (Overview,
+Transactions, Bills & Splits, Budgets) using a new reusable component
+library and design system, wired to **mock data** in `src/lib/mockData.ts`.
+Real API integration, auth-gating of the dashboard, and bank
+connection/statement upload are follow-up milestones.
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## Theming
+
+Flux opens in **light mode by default**. A toggle in the rail (desktop)
+or header (mobile) switches to dark; the choice persists via
+`localStorage` (`useTheme` hook + `ThemeProvider`). All components
+reference semantic CSS variables (`--color-bg`, `--color-surface`,
+`--color-text-primary`, etc., defined in `src/styles/tokens.css`) keyed
+off `[data-theme="light"|"dark"]` on `<html>` — never hardcode a raw
+hex or a `bg-white/[x]` opacity trick, since that breaks one of the
+two themes. An inline script in `index.html` applies the saved theme
+before React mounts, to avoid a flash of the wrong theme on load.
+
+## Logo
+
+`src/components/common/Logo/Logo.tsx` is the hand-drawn "scribble" Flux
+mark, recolored to the violet brand accent (provided by design in green;
+swapped to match the app's primary accent). It reads `--color-violet`
+and `--color-text-primary` directly, so it adapts automatically between
+themes. Use `<Logo size={36} />` for the full lockup or
+`<Logo markOnly />` for just the mark in tight spaces. `public/flux-favicon.svg`
+is a static (non-theme-aware) copy for the browser tab icon.
+
+## Getting started
+
+```bash
+npm install
+npm run dev
 ```
+
+Set `VITE_API_URL` in a `.env` file for the parts of the app that still
+talk to the Django backend (registration flow).

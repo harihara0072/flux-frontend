@@ -1,0 +1,177 @@
+/* src/styles/tokens.css
+ * Flux Design Tokens
+ * ---------------------------------------------------------
+ * Single source of truth for color, type, spacing, motion.
+ * Every component should derive its values from here rather
+ * than hard-coding hex/rem values inline.
+ *
+ * THEMING: Light is the default theme. Dark is opt-in via
+ * `[data-theme="dark"]` on <html>, toggled by ThemeProvider.
+ * Components must reference the *semantic* tokens below
+ * (--color-surface, --color-text-primary, etc.) rather than
+ * the raw palette tokens (--palette-violet, etc.) so they
+ * automatically adapt when the theme flips.
+ */
+
+:root {
+  /* ---- Raw palette (theme-independent brand colors) ---- */
+  --palette-violet: #6c5ce7;
+  --palette-violet-soft: #8a7cf0;
+  --palette-teal: #00d9a3;
+  --palette-coral: #ff6b6b;
+  --palette-amber: #ffb84d;
+
+  /* ---- Typography (same across themes) ---- */
+  --font-display: 'Fraunces', 'Georgia', serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, 'SFMono-Regular', monospace;
+
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.375rem;
+  --text-2xl: 1.75rem;
+  --text-3xl: 2.5rem;
+  --text-4xl: 3.5rem;
+
+  /* ---- Spacing scale (4px base) ---- */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-20: 5rem;
+
+  /* ---- Radius ---- */
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-full: 999px;
+
+  /* ---- Motion ---- */
+  --ease-flow: cubic-bezier(0.32, 0.72, 0, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+
+  --duration-fast: 150ms;
+  --duration-base: 280ms;
+  --duration-slow: 480ms;
+  --duration-flow: 900ms;
+
+  /* ---- Layout ---- */
+  --rail-width: 248px;
+  --rail-width-collapsed: 84px;
+  --content-max-width: 1320px;
+}
+
+/* =========================================================
+ * LIGHT THEME (default)
+ * Warm paper surfaces, ink text. This is what the app loads
+ * with on first visit.
+ * ========================================================= */
+:root,
+[data-theme='light'] {
+  --color-bg: #f5f3ec;            /* page background — warm paper */
+  --color-bg-raised: #ffffff;     /* elevated surfaces (modals, popovers) */
+  --color-surface: #ffffff;       /* card surface */
+  --color-surface-sunken: #ece9e0; /* wells, inputs, track backgrounds */
+
+  --color-text-primary: #14151a;
+  --color-text-secondary: #6b6d7a;
+  --color-text-on-accent: #ffffff;
+
+  --color-border-subtle: rgba(11, 14, 20, 0.08);
+  --color-border-strong: rgba(11, 14, 20, 0.14);
+
+  --color-violet: var(--palette-violet);
+  --color-violet-soft: #5d4bd6;
+  --color-violet-dim: rgba(108, 92, 231, 0.10);
+
+  /* Neutral wash for hover/track backgrounds — dark-on-light here,
+     flips to light-on-dark in the dark theme below. Use these instead
+     of hardcoded bg-white/[x] so surfaces work in both themes. */
+  --color-overlay-faint: rgba(11, 14, 20, 0.035);
+  --color-overlay-soft: rgba(11, 14, 20, 0.05);
+  --color-overlay-medium: rgba(11, 14, 20, 0.07);
+  --color-overlay-strong: rgba(11, 14, 20, 0.1);
+
+  --color-teal: #00a87f;          /* darkened for AA contrast on white */
+  --color-teal-dim: rgba(0, 168, 127, 0.10);
+
+  --color-coral: #e2483f;         /* darkened for AA contrast on white */
+  --color-coral-dim: rgba(226, 72, 63, 0.10);
+
+  --color-amber: #b5760a;         /* darkened for AA contrast on white */
+  --color-amber-dim: rgba(181, 118, 10, 0.12);
+
+  --shadow-card: 0 1px 2px rgba(11, 14, 20, 0.04), 0 8px 20px rgba(11, 14, 20, 0.05);
+  --shadow-raised: 0 4px 16px rgba(11, 14, 20, 0.08), 0 16px 32px rgba(11, 14, 20, 0.06);
+  --shadow-glow-violet: 0 0 0 1px rgba(108, 92, 231, 0.25), 0 8px 20px rgba(108, 92, 231, 0.18);
+
+  --scrollbar-thumb: rgba(11, 14, 20, 0.18);
+  --scrollbar-thumb-hover: rgba(11, 14, 20, 0.28);
+
+  color-scheme: light;
+}
+
+/* =========================================================
+ * DARK THEME (opt-in)
+ * The original ink/paper-card direction, now reachable via
+ * the theme toggle instead of being the default.
+ * ========================================================= */
+[data-theme='dark'] {
+  --color-bg: #0b0e14;
+  --color-bg-raised: #11141d;
+  --color-surface: rgba(255, 255, 255, 0.035);
+  --color-surface-sunken: rgba(255, 255, 255, 0.06);
+
+  --color-text-primary: #eceaf6;
+  --color-text-secondary: #8a8f9c;
+  --color-text-on-accent: #ffffff;
+
+  --color-border-subtle: rgba(255, 255, 255, 0.08);
+  --color-border-strong: rgba(255, 255, 255, 0.14);
+
+  --color-violet: var(--palette-violet);
+  --color-violet-soft: var(--palette-violet-soft);
+  --color-violet-dim: rgba(108, 92, 231, 0.14);
+
+  --color-overlay-faint: rgba(255, 255, 255, 0.03);
+  --color-overlay-soft: rgba(255, 255, 255, 0.04);
+  --color-overlay-medium: rgba(255, 255, 255, 0.06);
+  --color-overlay-strong: rgba(255, 255, 255, 0.08);
+
+  --color-teal: var(--palette-teal);
+  --color-teal-dim: rgba(0, 217, 163, 0.14);
+
+  --color-coral: var(--palette-coral);
+  --color-coral-dim: rgba(255, 107, 107, 0.14);
+
+  --color-amber: var(--palette-amber);
+  --color-amber-dim: rgba(255, 184, 77, 0.14);
+
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.2), 0 8px 24px rgba(0, 0, 0, 0.25);
+  --shadow-raised: 0 4px 16px rgba(0, 0, 0, 0.3), 0 16px 40px rgba(0, 0, 0, 0.35);
+  --shadow-glow-violet: 0 0 0 1px rgba(108, 92, 231, 0.3), 0 8px 24px rgba(108, 92, 231, 0.25);
+
+  --scrollbar-thumb: rgba(255, 255, 255, 0.12);
+  --scrollbar-thumb-hover: rgba(255, 255, 255, 0.2);
+
+  color-scheme: dark;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-fast: 0ms;
+    --duration-base: 0ms;
+    --duration-slow: 0ms;
+    --duration-flow: 0ms;
+  }
+}
+

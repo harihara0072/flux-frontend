@@ -1,5 +1,6 @@
 // src/hooks/useAuth.tsx
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useState } from 'react';
+import type { ReactNode } from 'react';
 
 // 1. Define the shape of our context data
 interface AuthContextType {
@@ -17,7 +18,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   // Check localStorage on load for existing tokens
   const [accessToken, setAccessToken] = useState<string | null>(localStorage.getItem('access_token'));
-  const [refreshToken, setRefreshToken] = useState<string | null>(localStorage.getItem('refresh_token'));
+  const [, setRefreshToken] = useState<string | null>(localStorage.getItem('refresh_token'));
 
   // Logic to determine if a user is considered logged in
   const isAuthenticated = !!accessToken;

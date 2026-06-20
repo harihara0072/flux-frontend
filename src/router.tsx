@@ -1,43 +1,24 @@
-// src/router.tsx (Updated)
+// src/router.tsx
 import React from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import ProtectedRoute from './components/ProtectedRoute'; // NEW Import
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-// Import Pages and Flows
+// Auth flow (unchanged for now — will be revisited in a later milestone)
 import MultiStepAuthFlow from './flows/auth/MultiStepAuthFlow';
 import LoginPage from './pages/LoginPage';
-import DashboardPage from './pages/DashboardPage';
 
-// REMOVE the definition of the old ProtectedRoute component here
+// New dashboard homepage
+import DashboardHomePage from './pages/DashboardHomePage';
 
 const AppRouter: React.FC = () => {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Authentication Flow Routes */}
+        {/* Homepage: dashboard UI, not gated behind auth yet (UI-only milestone) */}
+        <Route path="/" element={<DashboardHomePage />} />
+
+        {/* Auth Flow Routes — kept for the next milestone */}
         <Route path="/register" element={<MultiStepAuthFlow />} />
         <Route path="/login" element={<LoginPage />} />
-
-        {/* Protected Routes */}
-        <Route
-          path="/dashboard"
-          element={
-            <ProtectedRoute>
-              <DashboardPage />
-            </ProtectedRoute>
-          }
-        />
-
-        {/* Default Route: Check Auth status via the protected route */}
-        <Route
-          path="/"
-          element={
-            // Use ProtectedRoute to check status and redirect if needed
-            <ProtectedRoute>
-              <Navigate to="/dashboard" replace />
-            </ProtectedRoute>
-          }
-        />
       </Routes>
     </BrowserRouter>
   );

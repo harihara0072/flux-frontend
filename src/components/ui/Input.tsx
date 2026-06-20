@@ -1,53 +1,41 @@
 // src/components/ui/Input.tsx
-import React, { InputHTMLAttributes } from 'react';
-import { cn } from '../../utils/cn';
+import React from 'react';
+import type { InputHTMLAttributes } from 'react';
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   label?: string;
   error?: string;
 }
 
-const Input: React.FC<InputProps> = ({ label, error, className, ...props }) => {
-  // Base styles - layout, sizing, colors
-  const baseClasses = cn(
-    'w-full p-4',
-    'text-gray-200 bg-gray-700',
-    'border rounded-lg',
-    'transition duration-200',
-    'outline-none'
-  );
-
-  // State styles - focus and error states
-  const stateClasses = cn(
-    // Default focus state
-    !error && 'border-gray-600 focus:ring-2 focus:ring-emerald-400 focus:border-emerald-400',
-    // Error state
-    error && 'border-red-400 focus:border-red-400 focus:ring-red-400'
-  );
-
-  // Label styles
-  const labelClasses = cn(
-    'block text-sm font-medium text-gray-700 mb-2'
-  );
-
-  // Error message styles
-  const errorClasses = cn(
-    'text-red-400 text-sm mt-2'
-  );
+const Input: React.FC<InputProps> = ({ label, error, className = '', ...props }) => {
+  const inputClasses = `
+    w-full p-4 
+    text-gray-200 
+    bg-gray-700 
+    border border-gray-600 
+    rounded-lg 
+    transition duration-200 
+    focus:ring-2 
+    focus:ring-emerald-400 
+    focus:border-emerald-400 
+    outline-none
+    ${error ? 'border-red-400 focus:border-red-400 focus:ring-red-400' : ''}
+    ${className}
+  `;
 
   return (
     <div className="w-full">
       {label && (
-        <label className={labelClasses}>
+        <label className="block text-sm font-medium text-gray-400 mb-2">
           {label}
         </label>
       )}
       <input
-        className={cn(baseClasses, stateClasses, className)}
+        className={inputClasses}
         {...props}
       />
       {error && (
-        <p className={errorClasses}>{error}</p>
+        <p className="text-red-400 text-sm mt-2">{error}</p>
       )}
     </div>
   );
